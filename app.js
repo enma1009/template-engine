@@ -73,6 +73,9 @@ function addManager() {
             function(response) {
                 if(response.confirm) {
                     addNewMember();
+                } else {
+                    let htmlData = render(teamMembers);
+                    displayTeam(htmlData);
                 }
             }
         );
@@ -109,6 +112,9 @@ function addEngineer() {
             function(response) {
                 if(response.confirm) {
                     addNewMember();
+                } else {
+                    let htmlData = render(teamMembers);
+                    displayTeam(htmlData);
                 }
             }
         );
@@ -140,15 +146,27 @@ function addIntern() {
       ]).then(function(response) {
         const newIntern = new Intern(response.name,response.id,response.email,response.school);
         teamMembers.push(newIntern);
-        console.log(teamMembers);
+       // console.log(teamMembers);
         inquirer.prompt({type: "confirm", name: "confirm", message: "Do you want to add another member?"}).then(
             function(response) {
                 if(response.confirm) {
                     addNewMember();
+                } else {
+                    let htmlData = render(teamMembers);
+                    displayTeam(htmlData);
                 }
             }
         );
       });
+};
+
+function displayTeam(htmlData) {
+    fs.writeFile(outputPath, htmlData, function(err) {
+        if(err) {
+            return console.log(error);
+        } 
+        console.log("Your Team Roster has been generated. Open 'team.html' in your browser to see it.");
+    })
 };
 
 
